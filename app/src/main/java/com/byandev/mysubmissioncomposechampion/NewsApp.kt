@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.byandev.mysubmissioncomposechampion.model.Articles
 import com.byandev.mysubmissioncomposechampion.ui.navigation.ScreenNavigation
+import com.byandev.mysubmissioncomposechampion.ui.screen.AboutScreen
 import com.byandev.mysubmissioncomposechampion.ui.screen.DetailScreen
 import com.byandev.mysubmissioncomposechampion.ui.screen.HomeScreen
 import com.byandev.mysubmissioncomposechampion.ui.theme.MySubmissionComposeChampionTheme
@@ -41,16 +42,22 @@ fun NewsApp(
         topBar = {
             TopAppBar(
                 title = {
-                    if (currentRoute != ScreenNavigation.Detail.route) {
-                        Text(text = "News App")
+                    when(currentRoute) {
+                        ScreenNavigation.Home.route -> Text(text = "News App")
+                        ScreenNavigation.Detail.route -> Text(text = "News Detail")
+                        ScreenNavigation.About.route -> Text(text = "About Us")
                     }
                 },
                 actions = {
-                    IconButton(onClick = { }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Info,
-                            contentDescription = stringResource(R.string.about),
-                        )
+                    if (currentRoute != ScreenNavigation.About.route) {
+                        IconButton(onClick = {
+                            navController.navigate(ScreenNavigation.About.route)
+                        }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Info,
+                                contentDescription = stringResource(R.string.about),
+                            )
+                        }
                     }
                 },
                 backgroundColor = MaterialTheme.colors.primary,
@@ -68,7 +75,9 @@ fun NewsApp(
                     navController = navController,
                     startDestination = ScreenNavigation.Home.route,
                 ) {
-                    composable(ScreenNavigation.Home.route) {
+                    composable(
+                        route = ScreenNavigation.Home.route
+                    ) {
                         HomeScreen(
                             navigateToDetail = { articles ->
                                 val stringJson = StringBuilder(Gson().toJson(articles))
@@ -89,6 +98,15 @@ fun NewsApp(
                             },
                         )
 
+                    }
+                    composable(
+                        route = ScreenNavigation.About.route
+                    ) {
+                        AboutScreen(
+                            navigateBack = {
+                                navController.navigateUp()
+                            }
+                        )
                     }
                 }
 

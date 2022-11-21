@@ -7,6 +7,15 @@ import com.byandev.mysubmissioncomposechampion.ui.theme.MySubmissionComposeChamp
 
 @Composable
 fun AboutScreen(
+    modifier: Modifier = Modifier,
+    navigateBack: () -> Unit,
+) {
+    AboutContent(onBackClick = { navigateBack }, modifier = modifier)
+}
+
+@Composable
+fun AboutContent(
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -16,6 +25,8 @@ fun AboutScreen(
 @Preview(showBackground = true)
 fun PreviewAboutScreen() {
     MySubmissionComposeChampionTheme {
-        AboutScreen()
+        AboutContent(
+            onBackClick = {}
+        )
     }
 }
