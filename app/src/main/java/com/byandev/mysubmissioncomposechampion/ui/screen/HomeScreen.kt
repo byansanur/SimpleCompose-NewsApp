@@ -3,6 +3,7 @@ package com.byandev.mysubmissioncomposechampion.ui.screen
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,6 +29,7 @@ import com.byandev.mysubmissioncomposechampion.NewsViewModel
 import com.byandev.mysubmissioncomposechampion.R
 import com.byandev.mysubmissioncomposechampion.ViewModelFactory
 import com.byandev.mysubmissioncomposechampion.data.NewsRepository
+import com.byandev.mysubmissioncomposechampion.model.Articles
 import com.byandev.mysubmissioncomposechampion.ui.theme.MySubmissionComposeChampionTheme
 import com.byandev.mysubmissioncomposechampion.ui.widget.NewsItem
 import kotlinx.coroutines.launch
@@ -36,7 +38,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    newsViewModel: NewsViewModel = viewModel(factory = ViewModelFactory(NewsRepository()))
+    newsViewModel: NewsViewModel = viewModel(factory = ViewModelFactory(NewsRepository())),
+    navigateToDetail: (Articles) -> Unit,
 ) {
 
     val newsList by newsViewModel.getListNews.collectAsState()
@@ -51,7 +54,7 @@ fun HomeScreen(
             state = listState,
             contentPadding = PaddingValues(bottom = 80.dp),
         ) {
-            newsList.forEach { (initial, articles) ->
+            newsList.forEach { (_, articles) ->
                 items(articles, key = { it.title }) { news ->
                     NewsItem(
                         title = news.title,
@@ -60,6 +63,9 @@ fun HomeScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .animateItemPlacement(tween(durationMillis = 100))
+                            .clickable {
+                                navigateToDetail(news)
+                            }
                     )
 
                 }
@@ -104,15 +110,6 @@ fun ScrollToTopButton(
             imageVector = Icons.Filled.KeyboardArrowUp,
             contentDescription = stringResource(R.string.scroll_to_top),
         )
-    }
-}
-
-
-@Composable
-@Preview(showBackground = true)
-fun PreviewHomeScreen() {
-    MySubmissionComposeChampionTheme {
-        HomeScreen()
     }
 }
 

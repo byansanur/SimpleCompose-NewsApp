@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,20 +16,34 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.byandev.mysubmissioncomposechampion.data.NewsRepository
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.byandev.mysubmissioncomposechampion.model.Articles
+import com.byandev.mysubmissioncomposechampion.ui.navigation.ScreenNavigation
+import com.byandev.mysubmissioncomposechampion.ui.screen.DetailScreen
 import com.byandev.mysubmissioncomposechampion.ui.screen.HomeScreen
 import com.byandev.mysubmissioncomposechampion.ui.theme.MySubmissionComposeChampionTheme
+import com.google.gson.Gson
 
 @Composable
 fun NewsApp(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
 ) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = "News App")
+                    if (currentRoute != ScreenNavigation.Detail.route) {
+                        Text(text = "News App")
+                    }
                 },
                 actions = {
                     IconButton(onClick = { }) {
@@ -49,7 +64,34 @@ fun NewsApp(
                     .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                HomeScreen()
+                NavHost(
+                    navController = navController,
+                    startDestination = ScreenNavigation.Home.route,
+                ) {
+                    composable(ScreenNavigation.Home.route) {
+                        HomeScreen(
+                            navigateToDetail = { articles ->
+                                val stringJson = StringBuilder(Gson().toJson(articles))
+                                navController.navigate(ScreenNavigation.Detail.createRoute(stringJson.toString()))
+                            }
+                        )
+                    }
+                    composable(
+                        route = ScreenNavigation.Detail.route,
+                        arguments = listOf(navArgument("newsData") { type = NavType.StringType }),
+                    ) { nav ->
+                        val articleAsJson = nav.arguments?.getString("newsData")
+                        val article = Gson().fromJson(articleAsJson, Articles::class.java)
+                        DetailScreen(
+                            newsData = article,
+                            navigateBack = {
+                                navController.navigateUp()
+                            },
+                        )
+
+                    }
+                }
+
             }
         }
     )
