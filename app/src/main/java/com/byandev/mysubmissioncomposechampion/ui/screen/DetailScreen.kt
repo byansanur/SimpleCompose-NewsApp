@@ -1,6 +1,5 @@
 package com.byandev.mysubmissioncomposechampion.ui.screen
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -41,7 +40,6 @@ fun DetailContent(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Log.e("TAG", "DetailContent: ${articles.title}")
 
     var isExpanded by remember { mutableStateOf(false) }
 
