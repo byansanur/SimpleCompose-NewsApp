@@ -22,6 +22,7 @@ fun TopBarHome(
     route: String?
 ) {
     TopAppBar(
+        modifier = modifier,
         title = {
             Text(text = title)
         },
@@ -57,6 +58,7 @@ fun TopBarNotHome(
         }
     }
     TopAppBar(
+        modifier = modifier,
         title = {
             Text(text = title)
         },

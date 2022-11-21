@@ -1,18 +1,13 @@
 package com.byandev.mysubmissioncomposechampion
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.Info
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -58,51 +53,46 @@ fun NewsApp(
                 TopBarHome(title = "News App", navController = navController, route = currentRoute)
             }
         }, content = {
-            Box(
+            NavHost(
                 modifier = modifier
-                    .padding(it)
+                    .padding(8.dp)
                     .fillMaxSize(),
-                contentAlignment = Alignment.Center
+                navController = navController,
+                startDestination = ScreenNavigation.Home.route,
             ) {
-                NavHost(
-                    navController = navController,
-                    startDestination = ScreenNavigation.Home.route,
+                composable(
+                    route = ScreenNavigation.Home.route
                 ) {
-                    composable(
-                        route = ScreenNavigation.Home.route
-                    ) {
-                        HomeScreen(
-                            navigateToDetail = { articles ->
-                                val stringJson = StringBuilder(Gson().toJson(articles))
-                                navController.navigate(ScreenNavigation.Detail.createRoute(stringJson.toString()))
-                            }
-                        )
-                    }
-                    composable(
-                        route = ScreenNavigation.Detail.route,
-                        arguments = listOf(navArgument("newsData") { type = NavType.StringType }),
-                    ) { nav ->
-                        val articleAsJson = nav.arguments?.getString("newsData")
-                        val article = Gson().fromJson(articleAsJson, Articles::class.java)
-                        DetailScreen(
-                            newsData = article,
-                            navigateBack = {
-                                navController.navigateUp()
-                            },
-                        )
-
-                    }
-                    composable(
-                        route = ScreenNavigation.About.route
-                    ) {
-                        AboutScreen(
-                            navigateBack = {
-                                navController.navigateUp()
-                            }
-                        )
-                    }
+                    HomeScreen(
+                        navigateToDetail = { articles ->
+                            val stringJson = StringBuilder(Gson().toJson(articles))
+                            navController.navigate(ScreenNavigation.Detail.createRoute(stringJson.toString()))
+                        }
+                    )
                 }
+                composable(
+                    route = ScreenNavigation.Detail.route,
+                    arguments = listOf(navArgument("newsData") { type = NavType.StringType }),
+                ) { nav ->
+                    val articleAsJson = nav.arguments?.getString("newsData")
+                    val article = Gson().fromJson(articleAsJson, Articles::class.java)
+                    DetailScreen(
+                        newsData = article,
+                        navigateBack = {
+                            navController.navigateUp()
+                        },
+                    )
 
+                }
+                composable(
+                    route = ScreenNavigation.About.route
+                ) {
+                    AboutScreen(
+                        navigateBack = {
+                            navController.navigateUp()
+                        }
+                    )
+                }
             }
         }
     )
