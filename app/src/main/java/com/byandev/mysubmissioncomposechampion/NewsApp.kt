@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,11 +47,11 @@ fun NewsApp(
         topBar = {
             if (!isHome) {
                 if (currentRoute == ScreenNavigation.Detail.route)
-                    TopBarNotHome(title = "News Detail", navController = navController, route = currentRoute)
+                    TopBarNotHome(title = stringResource(id = R.string.news_detail), navController = navController, route = currentRoute)
                 else if (currentRoute == ScreenNavigation.About.route)
-                    TopBarNotHome(title = "About Us", navController = navController, route = currentRoute)
+                    TopBarNotHome(title = stringResource(id = R.string.about), navController = navController, route = currentRoute)
             } else {
-                TopBarHome(title = "News App", navController = navController, route = currentRoute)
+                TopBarHome(title = stringResource(id = R.string.app_name), navController = navController, route = currentRoute)
             }
         }, content = {
             NavHost(

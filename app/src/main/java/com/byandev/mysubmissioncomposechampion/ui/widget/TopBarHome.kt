@@ -81,7 +81,7 @@ fun TopBarNotHome(
             if (showBackButton) {
                 IconButton(
                     onClick = { navController.navigateUp() }
-                ) { Icon(Icons.Default.ArrowBack, "Back") }
+                ) { Icon(Icons.Default.ArrowBack, stringResource(R.string.back)) }
             }
         },
     )

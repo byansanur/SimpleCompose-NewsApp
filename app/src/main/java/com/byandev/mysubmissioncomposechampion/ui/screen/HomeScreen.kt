@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.byandev.mysubmissioncomposechampion.NewsViewModel
@@ -30,7 +30,6 @@ import com.byandev.mysubmissioncomposechampion.R
 import com.byandev.mysubmissioncomposechampion.ViewModelFactory
 import com.byandev.mysubmissioncomposechampion.data.NewsRepository
 import com.byandev.mysubmissioncomposechampion.model.Articles
-import com.byandev.mysubmissioncomposechampion.ui.theme.MySubmissionComposeChampionTheme
 import com.byandev.mysubmissioncomposechampion.ui.widget.NewsItem
 import kotlinx.coroutines.launch
 
@@ -53,6 +52,7 @@ fun HomeScreen(
         LazyColumn(
             state = listState,
             contentPadding = PaddingValues(bottom = 80.dp),
+            modifier = modifier.testTag(stringResource(R.string.news_list))
         ) {
             newsList.forEach { (_, articles) ->
                 items(articles, key = { it.title }) { news ->

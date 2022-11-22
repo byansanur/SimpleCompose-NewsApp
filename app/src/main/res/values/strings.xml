@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">News App</string>
-    <string name="about">about page</string>
+    <string name="about">About Us</string>
     <string name="scroll_to_top">scroll to top</string>
     <string name="my_name_is">Ratbyansa nur</string>
     <string name="my_email">ratbyansanur81@gmail.com</string>
+    <string name="news_detail">News Detail</string>
+    <string name="my_image_profile">my image profile</string>
+    <string name="back">Back</string>
+    <string name="news_list">NewsList</string>
 </resources>
