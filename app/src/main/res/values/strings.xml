@@ -8,4 +8,6 @@
     <string name="my_image_profile">my image profile</string>
     <string name="back">Back</string>
     <string name="news_list">NewsList</string>
+    <string name="news_image">news image</string>
+    <string name="detail_content">DetailContent</string>
 </resources>

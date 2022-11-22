@@ -12,12 +12,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.byandev.mysubmissioncomposechampion.R
 import com.byandev.mysubmissioncomposechampion.model.Articles
 import com.byandev.mysubmissioncomposechampion.ui.theme.MySubmissionComposeChampionTheme
 
@@ -48,11 +51,12 @@ fun DetailContent(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
                 .weight(1f)
+                .testTag(stringResource(R.string.detail_content))
         ) {
             Box {
                AsyncImage(
                    model = articles.urlToImage,
-                   contentDescription = null,
+                   contentDescription = stringResource(R.string.news_image),
                    contentScale = ContentScale.Crop,
                    modifier = Modifier
                        .size(400.dp)
@@ -107,7 +111,7 @@ fun DetailContent(
                     color = MaterialTheme.colors.secondary,
                     modifier = modifier.clickable {
                         isExpanded = true
-                    }
+                    }.testTag("ReadMoreText")
                 )
 
             }

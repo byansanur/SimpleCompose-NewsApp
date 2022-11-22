@@ -1,9 +1,12 @@
 package com.byandev.mysubmissioncomposechampion.ui.screen
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onRoot
-import androidx.compose.ui.test.printToLog
+import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.testing.TestNavHostController
+import com.byandev.mysubmissioncomposechampion.R
 import com.byandev.mysubmissioncomposechampion.model.Articles
 import com.byandev.mysubmissioncomposechampion.ui.theme.MySubmissionComposeChampionTheme
 import org.junit.Before
@@ -14,6 +17,7 @@ class DetailScreenTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+    private lateinit var navController: TestNavHostController
 
     private val articleFake = Articles(
         author = "Andy Greenberg",
@@ -29,6 +33,8 @@ class DetailScreenTest {
     fun setUp() {
         composeTestRule.setContent {
             MySubmissionComposeChampionTheme {
+                navController = TestNavHostController(LocalContext.current)
+                navController.navigatorProvider.addNavigator(ComposeNavigator())
                 DetailContent(
                     articles = articleFake,
                     onBackClick = {  }
@@ -40,17 +46,15 @@ class DetailScreenTest {
 
     @Test
     fun make_sure_detail_content_displayed() {
-        TODO("Not yet implemented")
+        composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.news_image)).assertIsDisplayed()
+        composeTestRule.onNodeWithText(articleFake.title).assertIsDisplayed()
+        composeTestRule.onNodeWithText(articleFake.publishedAt).assertIsDisplayed()
     }
 
     @Test
-    fun perform_scroll_and_click_read_more() {
-        TODO("Not yet implemented")
-    }
-
-    @Test
-    fun perform_click_about_then_back_again() {
-        TODO("Not yet implemented")
+    fun perform_click_read_more() {
+        composeTestRule.onNodeWithText(articleFake.content).assertIsDisplayed()
+        composeTestRule.onNodeWithTag("ReadMoreText").performClick()
     }
 
 
